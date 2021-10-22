@@ -1,0 +1,49 @@
+{% extends 'regapp/base.html' %}
+
+{% block header %}
+    <a href="{% url 'index' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
+    <a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">username</a>
+{% endblock %}
+
+{% block content %}
+		<form class="form-width-half" action="#" method="post">
+			<p class="title text-16">Регистрация заявки</p>
+			<hr class="line"/>
+
+			<select id="institutions" name="institutions" class="input input-right">
+				<option selected="selected" value="institution id">ЧОУВО «МУ им. С.Ю. Витте»</option>
+			</select>
+			<label for="institutions" class="label">Образовательное учреждение:</label>
+
+			<button class="btn btn-right btn-width-half secondary-btn">ДОБАВИТЬ ОБОРУДОВАНИЕ</button>
+			<label class="label">Оборудование:</label>
+
+			<div class="equipment-item">
+				<button class="btn btn-right btn-width-30 secondary-btn">✕</button>
+				<input class="input input-width-1 input-right" type="number" placeholder="Кол-во">
+				<select name="equipments" class="input input-left">
+					<optgroup label="Группа 1">
+						<option value="equipment-id">Оборудование 1</option>
+					</optgroup>
+					<optgroup label="Группа 2">
+						<option value="equipment-id2">Оборудование 2</option>
+					</optgroup>
+				</select>
+			</div>
+			<div class="equipment-item">
+				<button class="btn btn-right btn-width-30 secondary-btn">✕</button>
+				<input class="input input-width-1 input-right" type="number" placeholder="Кол-во">
+				<select name="equipments" class="input input-left">
+					<optgroup label="Группа 1">
+						<option value="equipment-id">Оборудование 1</option>
+					</optgroup>
+					<optgroup label="Группа 2">
+						<option value="equipment-id2">Оборудование 2</option>
+					</optgroup>
+				</select>
+			</div>
+
+			<hr class="line"/>
+			<input class="btn btn-right btn-width-half primary-btn" type="submit" value="ЗАРЕГИСТРИРОВАТЬ">
+		</form>
+{% endblock %}

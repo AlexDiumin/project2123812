@@ -1,0 +1,13 @@
+{% extends 'regapp/base.html' %}
+
+{% block content %}
+	<div class="form-width-half">
+		<p class="title text-16">RegApp</p>
+		<hr class="line"/>
+		<p class="index-text">У нас вы можете оставить заявку на приобретение оборудования!</p>
+		<p class="index-text index-subtext">Зарегистрируйтесь и/или войдите, чтобы продолжить.</p>
+		<hr class="line"/>
+		<a href="{% url 'signUp' %}" class="btn btn-left btn-width-half secondary-btn">ЗАРЕГИСТРИРОВАТЬСЯ</a>
+		<a href="{% url 'signIn' %}" class="btn btn-right btn-width-half primary-btn">ВОЙТИ</a>
+	</div>
+{% endblock %}

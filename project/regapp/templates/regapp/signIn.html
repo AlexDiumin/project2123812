@@ -1,0 +1,19 @@
+{% extends 'regapp/base.html' %}
+
+{% block header %}
+    <a href="{% url 'signUp' %}" class="btn btn-right ghost-btn">ЗАРЕГИСТРИРОВАТЬСЯ</a>
+{% endblock %}
+
+{% block content %}
+    <form class="form-width-half" method="post">
+        {% csrf_token %}
+        <p class="title text-16">Авторизация</p>
+        <hr class="line"/>
+        <input class="input" type="text" id="signin-login" name="signin-login" placeholder="Введите логин">
+        <label class="label" for="signin-login">Логин:</label>
+        <input class="input" type="password" id="signin-pass" name="signin-pass" placeholder="Введите пароль">
+        <label class="label" for="signin-pass">Пароль:</label>
+        <hr class="line"/>
+        <input id="form-signin-btn" class="btn btn-right btn-width-half primary-btn" type="submit" value="ВОЙТИ">
+    </form>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ title }}</title>
+	<link rel="stylesheet" href="{% static 'regapp/css/styles.css' %}">
+</head>
+<body>
+	<header>
+		<a href="{% url 'index' %}" class="btn btn-left ghost-btn">RegApp</a>
+        {% block header %}{% endblock %}
+	</header>
+	<main>{% block content %}{% endblock %}</main>
+	<footer>
+		<a href="{% url 'index' %}" class="btn ghost-btn">RegApp</a>
+	</footer>
+</body>
+</html>

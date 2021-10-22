@@ -1,0 +1,23 @@
+{% extends 'regapp/base.html' %}
+
+{% block header %}
+    <a href="{% url 'index' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
+    <a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">username</a>
+{% endblock %}
+
+{% block content %}
+    <p class="title myApplications-title">Мои заявки</p>
+    <a href="{% url 'regApp' %}" class="btn btn-right primary-btn">ЗАРЕГИСТРИРОВАТЬ ЗАЯВКУ</a>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>ДАТА</th>
+            <th>ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ</th>
+        </tr>
+        <tr onclick="window.location='{% url 'myApp' %}';">
+            <td>154</td>
+            <td>19.01.2021</td>
+            <td>Частное образовательное учреждение высшего образования «Московский университет имени С.Ю. Витте»</td>
+        </tr>
+    </table>
+{% endblock %}

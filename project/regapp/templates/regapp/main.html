@@ -1,0 +1,44 @@
+{% extends 'regapp/base.html' %}
+
+{% load static %}
+
+{% block header %}
+	<a href="{% url 'index' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
+	<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">username</a>
+{% endblock %}
+
+{% block content %}
+	<input type="search" class="search-field" placeholder="Введите наименование оборудования">
+	<div class="categories-wrapper">
+		<p>Категории</p>
+		<ul>
+			<li class="selected-category"><a href="#">Все категории</a></li>
+			<li><a href="#">Информатика</a></li>
+			<li><a href="#">Химия</a></li>
+			<li><a href="#">Физика</a></li>
+			<li><a href="#">Программирование</a></li>
+			<li><a href="#">Радиотехника</a></li>
+			<li><a href="#">Пищевые технологии</a></li>
+			<li><a href="#">Гидромеханика</a></li>
+			<li><a href="#">Пилотные установки</a></li>
+		</ul>
+	</div>
+	<div class="equipments-wrapper">
+		<a href="{% url 'equipment' %}" class="equipment">
+			<img class="equipment-img" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">
+			<p>Наименование оборудования</p>
+		</a>
+		<a href="{% url 'equipment' %}" class="equipment">
+			<img class="equipment-img" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">
+			<p>Наименование оборудования</p>
+		</a>
+		<a href="{% url 'equipment' %}" class="equipment">
+			<img class="equipment-img" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">
+			<p>Наименование оборудования</p>
+		</a>
+		<a href="{% url 'equipment' %}" class="equipment">
+			<img class="equipment-img" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">
+			<p>Наименование оборудования</p>
+		</a>
+	</div>
+{% endblock %}

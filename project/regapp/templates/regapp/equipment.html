@@ -1,0 +1,24 @@
+{% extends 'regapp/base.html' %}
+
+{% load static %}
+
+{% block header %}
+	<a href="{% url 'index' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
+	<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">username</a>
+{% endblock %}
+
+{% block content %}
+	<a href="{% url 'index' %}" class="btn btn-left secondary-btn">ОБОРУДОВАНИЕ</a>
+	<div class="equipment-wrapper">
+		<img class="equipment-img equipment-img-big" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">
+		<div class="equipment-right">
+			<p class="text-margin-20 text-color-9">Категория</p>
+			<p class=" text-margin-20text-16 text-bold">НАИМЕНОВАНИЕ ОБОРУДОВАНИЯ</p>
+			<P class="text-margin-20"><span class="text-bold">Артикул:</span> МП-Р92</P>
+			<p class="text-margin-20"><span class="text-bold">Цена:</span> предоставляется по запросу</p>
+			<input type="number" class="input input-left" placeholder="Кол-во">
+			<button class="btn btn-right btn-width-half primary-btn">СОХРАНИТЬ</button>
+		</div>
+	</div>
+	<p class="text-margin-20 equipment-description">Резервуар прозрачный, поэтому студенты могут видеть схемы потока. Стороны - листовое стекло, чтобы сопротивляться истиранию от проницаемой среды. Задняя часть резервуара содержит отводы давления. Каждый отвод имеет фильтры, которые останавливают любые нежелательные частицы. Отводы соединяются с рядом пьезометрических трубок на боковой части устройства, которые позволяют измерять распределение напора вдоль резервуара.</p>
+{% endblock %}

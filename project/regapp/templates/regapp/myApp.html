@@ -1,0 +1,32 @@
+{% extends 'regapp/base.html' %}
+
+{% block header %}
+	<a href="{% url 'index' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
+	<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">username</a>
+{% endblock %}
+
+{% block content %}
+	<a href="{% url 'myApplications' %}" class="btn btn-left secondary-btn">МОИ ЗАЯВКИ</a>
+	<p class="title text-16 myApp-title">НАИМЕНОВАНИЕ ОБРАЗОВАТЕЛЬНОГО УЧРЕЖДЕНИЯ</p>
+	<hr class="line myApp-line"/>
+	<p class="title text-color-6">Учредитель, адресс, номер телефона, эл. почта</p>
+	<p class="text-right text-margin-20">21.01.2021</p>
+	<p class="title text-bold text-16 text-margin-20 app-title">Заявка №15<br>на приобретение оборудования<br>Сокр. Наим.</p>
+	<table class="table-margin-top">
+		<tr>
+			<th>ID</th>
+			<th>НАИМЕНОВАНИЕ</th>
+			<th>КАТЕГОРИЯ</th>
+			<th>ЦЕНА, РУБ.</th>
+			<th>КОЛ-ВО</th>
+		</tr>
+		<tr onclick="window.location='{% url 'equipment' %}';">
+			<td>154</td>
+			<td>Программно-аппаратный комплекс для изучения архитектуры, программирования и построения информационно-управляющих систем ПАК ИУС</td>
+			<td>Информатика</td>
+			<td>предоставляется по запросу</td>
+			<td>10</td>
+		</tr>
+	</table>
+	<p class="text-right text-margin-20">Имя Фамилия</p>
+{% endblock %}
