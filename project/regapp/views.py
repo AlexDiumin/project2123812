@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from django.contrib import messages
+from regapp.forms import *
 
 
 def index(request):
@@ -11,9 +11,18 @@ def index(request):
 
 
 def signUp(request):
-    context = {'title': 'Регистрация', 'post': request.POST}
-    # messages.info(request, context['post'])
-    print(context['post'])
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            # print(form.cleaned_data)
+            try:
+                form.save()  # User.objects.create(**form.cleaned_data)
+                return redirect('signIn')
+            except:
+                form.add_error(None, 'Ошибка добавления пользователя')
+    else:
+        form = SignUpForm()
+    context = {'title': 'Регистрация', 'form': form}
     return render(request, 'regapp/signUp.html', context=context)
 
 

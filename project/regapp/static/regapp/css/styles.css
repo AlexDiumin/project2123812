@@ -188,6 +188,26 @@ footer {
 input[type="search"]::-webkit-search-cancel-button {
   display: none;
 }
+
+.form-error {
+    width: 100%;
+    overflow: hidden;
+    display: inline-block;
+    color: rgba(255, 0, 0, 0.75);
+    font-size: 12px;
+    line-height: 12px;
+    text-align: right;
+    margin: -10px 0 20px;
+}
+.form-error:first-of-type {
+    margin: 0 0 20px;
+}
+.form-error:last-of-type {
+    margin: -10px 0 0;
+}
+.form-error:empty {
+    display: none;
+}
 /*
 ** /формы
 */
