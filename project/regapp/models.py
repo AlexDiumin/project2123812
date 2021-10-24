@@ -16,8 +16,8 @@ class Position(models.Model):
 
 class User(models.Model):
     username = models.CharField(max_length=50, unique=True, db_index=True, verbose_name='Логин')
-    password1 = models.CharField(max_length=50, verbose_name='Пароль')
-    password2 = models.CharField(max_length=50, verbose_name='Подтверждение пароля')
+    password1 = models.CharField(max_length=100, verbose_name='Пароль')
+    password2 = models.CharField(max_length=100, verbose_name='Подтверждение пароля')
     full_name = models.CharField(max_length=100, verbose_name='ФИО')
     position = models.ForeignKey('Position', on_delete=CASCADE, verbose_name='Должность')
 

@@ -3,6 +3,8 @@ from django.core.exceptions import ValidationError
 
 from .models import *
 
+from passlib.hash import pbkdf2_sha256
+
 
 class SignUpForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -30,15 +32,16 @@ class SignUpForm(forms.ModelForm):
         password1 = self.cleaned_data['password1']
         if len(password1) >= 50:
             raise ValidationError('Длинна пароля должна быть меньше 50 символов.')
-        return password1
+        return pbkdf2_sha256.hash(password1)
 
     def clean_password2(self):
         password2 = self.cleaned_data['password2']
         if 'password1' in self.cleaned_data:
             password1 = self.cleaned_data['password1']
-            if password1 != password2:
+            if not pbkdf2_sha256.verify(password2, password1):
                 raise ValidationError('Пароли не совпадают.')
-        return password2
+            return password1
+        return pbkdf2_sha256.hash(password2)
 
     def clean_full_name(self):
         full_name = self.cleaned_data['full_name']
