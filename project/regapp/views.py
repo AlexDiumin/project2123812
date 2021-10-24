@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 
 from regapp.forms import *
 
+from passlib.hash import pbkdf2_sha256
+
 
 def index(request):
     context = {'title': 'Главная'}
@@ -14,12 +16,8 @@ def signUp(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            # print(form.cleaned_data)
-            try:
-                form.save()  # User.objects.create(**form.cleaned_data)
-                return redirect('signIn')
-            except:
-                form.add_error(None, 'Ошибка добавления пользователя')
+            form.save()
+            return redirect('signIn')
     else:
         form = SignUpForm()
     context = {'title': 'Регистрация', 'form': form}
@@ -27,9 +25,8 @@ def signUp(request):
 
 
 def signIn(request):
-    context = {'title': 'Авторизация', 'post': request.POST}
-    # messages.info(request, context['post'])
-    print(context['post'])
+    form = SignInForm
+    context = {'title': 'Авторизация', 'form': form}
     return render(request, 'regapp/signIn.html', context=context)
 
 

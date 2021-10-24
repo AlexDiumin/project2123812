@@ -5,39 +5,21 @@
 {% endblock %}
 
 {% block content %}
-<!--    <form class="form-width-half" method="post">-->
-<!--        {% csrf_token %}-->
-<!--        <p class="title text-16">Регистрация</p>-->
-<!--        <hr class="line"/>-->
-<!--        <input class="input" type="text" id="signup-login" name="signup-login" placeholder="Введите логин">-->
-<!--        <label class="label" for="signup-login">Логин:</label>-->
-<!--        <input class="input" type="password" id="signup-pass" name="signup-pass" placeholder="Введите пароль">-->
-<!--        <label class="label" for="signup-pass">Пароль:</label>-->
-<!--        <input class="input" type="password" id="signup-pass2" name="signup-pass2" placeholder="Введите пароль еще раз">-->
-<!--        <label class="label" for="signup-pass2">Подтверждение пароля:</label>-->
-<!--        <input class="input" type="email" id="email" name="email" placeholder="Введите email">-->
-<!--        <label class="label" for="email">Email:</label>-->
-<!--        <input class="input" type="text" id="first-name" name="first-name" placeholder="Введите имя">-->
-<!--        <label class="label" for="first-name">Имя:</label>-->
-<!--        <input class="input" type="text" id="last-name" name="last-name" placeholder="Введите фамилию">-->
-<!--        <label class="label" for="last-name">Фамилия:</label>-->
-<!--        <hr class="line"/>-->
-<!--        <input class="btn btn-right btn-width-half primary-btn" type="submit" value="ЗАРЕГИСТРИРОВАТЬСЯ">-->
-<!--    </form>-->
     <form class="form-width-half" action="{% url 'signUp' %}" method="post">
         {% csrf_token %}
         <p class="title text-16">Регистрация</p>
         <hr class="line"/>
-
-<!--        {{ form.as_p }}-->
-        <div class="form-error">Ошибка! {{ f.non_field_errors }}</div>
+        <div class="form-row form-row-error">{{ f.non_field_errors }}</div>
         {% for f in form %}
-            {{ f }}
-            <label class="label" for="{{ f.id_for_label }}">{{ f.label }}:</label>
-            <div class="form-error">Подошибка) {{ f.errors }}</div>
+            <div class="form-row">
+                <label class="label" for="{{ f.id_for_label }}">{{ f.label }}:</label>
+                {{ f }}
+            </div>
+            <div class="form-row form-row-error">{{ f.errors }}</div>
         {% endfor %}
-
         <hr class="line"/>
-        <input class="btn btn-right btn-width-half primary-btn" type="submit" value="ЗАРЕГИСТРИРОВАТЬСЯ">
+        <div class="form-row">
+            <input class="btn btn-right btn-width-half primary-btn" type="submit" value="ЗАРЕГИСТРИРОВАТЬСЯ">
+        </div>
     </form>
 {% endblock %}

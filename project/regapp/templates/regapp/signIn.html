@@ -9,11 +9,23 @@
         {% csrf_token %}
         <p class="title text-16">Авторизация</p>
         <hr class="line"/>
-        <input class="input" type="text" id="signin-login" name="signin-login" placeholder="Введите логин">
-        <label class="label" for="signin-login">Логин:</label>
-        <input class="input" type="password" id="signin-pass" name="signin-pass" placeholder="Введите пароль">
-        <label class="label" for="signin-pass">Пароль:</label>
+
+        <div class="form-row form-row-error">{{ f.non_field_errors }}</div>
+        {% for f in form %}
+            <div class="form-row">
+                <label class="label" for="{{ f.id_for_label }}">{{ f.label }}:</label>
+                {{ f }}
+            </div>
+            <div class="form-row form-row-error">{{ f.errors }}</div>
+        {% endfor %}
+
+<!--        <input class="input" type="text" id="signin-login" name="signin-login" placeholder="Введите логин">-->
+<!--        <label class="label" for="signin-login">Логин:</label>-->
+<!--        <input class="input" type="password" id="signin-pass" name="signin-pass" placeholder="Введите пароль">-->
+<!--        <label class="label" for="signin-pass">Пароль:</label>-->
         <hr class="line"/>
-        <input id="form-signin-btn" class="btn btn-right btn-width-half primary-btn" type="submit" value="ВОЙТИ">
+        <div class="form-row">
+            <input id="form-signin-btn" class="btn btn-right btn-width-half primary-btn" type="submit" value="ВОЙТИ">
+        </div>
     </form>
 {% endblock %}

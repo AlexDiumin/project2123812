@@ -103,7 +103,32 @@ footer {
 .form-width-half {
 	width: 50%;
 	margin: 0 auto;
-	font-size: 0;
+}
+
+.form-row {
+	width: 100%;
+	overflow: hidden;
+	margin: 20px 0;
+}
+
+.form-row-error {
+	text-align: right;
+	font-weight: bolder;
+	color: rgba(255, 0, 0, .75);
+	font-size: 12px;
+	line-height: 12px;
+	margin-top: -10px;
+}
+.form-row-error ul {
+	list-style: none;
+	margin: 0;
+}
+.form-row-error:first-of-type {
+	margin-top: 20px;
+	text-align: center;
+}
+.form-row-error:empty {
+	display: none;
 }
 
 .label {
@@ -118,7 +143,7 @@ footer {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	margin-bottom: 20px;
+	/*margin-bottom: 20px;*/
 }
 
 .input {
@@ -126,7 +151,7 @@ footer {
 	height: 30px;
 	width: calc(50% - 10px);
 	box-sizing: border-box;
-	margin: 0 0 20px;
+	/*margin: 0 0 20px;*/
 	border: 1px solid #999;
 	border-radius: 2px;
 	background-color: rgb(249, 252, 255);
@@ -142,15 +167,6 @@ footer {
 	font-size: 14px;
 	line-height: 28px;
 	color: #ccc;
-}
-
-.equipment-item {
-	width: 100%;
-	height: 50px;
-	display: inline-block;
-}
-.equipment-item:last-of-type {
-	margin-bottom: -20px;
 }
 
 .input-left {
@@ -186,27 +202,10 @@ footer {
 }
 
 input[type="search"]::-webkit-search-cancel-button {
-  display: none;
-}
+  /*display: none;*/
 
-.form-error {
-    width: 100%;
-    overflow: hidden;
-    display: inline-block;
-    color: rgba(255, 0, 0, 0.75);
-    font-size: 12px;
-    line-height: 12px;
-    text-align: right;
-    margin: -10px 0 20px;
-}
-.form-error:first-of-type {
-    margin: 0 0 20px;
-}
-.form-error:last-of-type {
-    margin: -10px 0 0;
-}
-.form-error:empty {
-    display: none;
+  visibility: hidden;
+  position: absolute;
 }
 /*
 ** /формы
