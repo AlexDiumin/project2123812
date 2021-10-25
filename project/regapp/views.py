@@ -1,7 +1,10 @@
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
 
 from regapp.forms import *
+
+from passlib.hash import pbkdf2_sha256
 
 
 def index(request):
@@ -23,7 +26,22 @@ def signUp(request):
 
 
 def signIn(request):
-    form = SignInForm
+    if request.method == 'POST':
+        form = SignInForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(username=cd['username'], password=cd['password1'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    # return HttpResponse('Authenticated successfully')
+                    return redirect('index')
+                else:
+                    form.add_error(None, 'Disabled account')
+            else:
+                form.add_error(None, 'Invalid login')
+    else:
+        form = SignInForm()
     context = {'title': 'Авторизация', 'form': form}
     return render(request, 'regapp/signIn.html', context=context)
 
