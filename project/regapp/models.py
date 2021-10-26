@@ -57,7 +57,7 @@ class Institution(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Категория оборудования')
+    name = models.CharField(max_length=255, unique=True, verbose_name='Категория оборудования')
 
     def __str__(self):
         return self.name
@@ -90,7 +90,7 @@ class Application(models.Model):
     user = models.ForeignKey('User', on_delete=CASCADE, verbose_name='Пользователь')
 
     def __str__(self):
-        return self.date
+        return f'{self.id} {self.user.username} {self.date}'
 
     class Meta:
         verbose_name = 'Заявка'
@@ -103,7 +103,7 @@ class ApplicationEquipment(models.Model):
     equipment = models.ForeignKey('Equipment', on_delete=CASCADE, verbose_name='Оборудование')
 
     def __str__(self):
-        return self.count
+        return f'{self.equipment.name} - {self.count} шт.'
 
     class Meta:
         verbose_name = 'Оборудование заявок'

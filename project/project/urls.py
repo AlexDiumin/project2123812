@@ -8,8 +8,10 @@ from regapp.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
+    path('<int:catId>/', index, name='index'),
     path('signUp/', signUp, name='signUp'),
     path('signIn/', signIn, name='signIn'),
+    path('signOut/', signOut, name='signOut'),
     path('regApp/', regApp, name='regApp'),
     path('equipment/', equipment, name='equipment'),
     path('myApp/', myApp, name='myApp'),

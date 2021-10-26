@@ -8,16 +8,31 @@ from .models import *
 from passlib.hash import pbkdf2_sha256
 
 
-USER = ''
+USERNAME = ''
 
 
-def index(request):
-    if USER:
-        print('\n', USER, '\n')
-
-    context = {'title': 'Главная'}
+def index(request, catId=0):
+    context = {'title': 'Главная', 'username': USERNAME}
+    if USERNAME:
+        context['catId'] = catId
+        context['categories'] = Category.objects.all()
+        context['equipments'] = Equipment.objects.all() if catId == 0 else (
+            Equipment.objects.filter(category=Category.objects.get(id=catId))
+        )
+        return render(request, 'regapp/main.html', context=context)
     return render(request, 'regapp/index.html', context=context)
-    # return render(request, 'regapp/main.html', context=context)
+
+
+# def main(request, catId):
+#     context = {'title': 'Главная',
+#                'username': USERNAME,
+#                'categories': Category.objects.all(),
+#                'catId': catId}
+#     if catId > 0:
+#         context['equipments'] = Equipment.objects.filter(category=Category.objects.get(id=catId))
+#     else:
+#         context['equipments'] = Equipment.objects.all()
+#     return render(request, 'regapp/main.html', context=context)
 
 
 def signUp(request):
@@ -33,7 +48,7 @@ def signUp(request):
 
 
 def signIn(request):
-    global USER
+    global USERNAME
     if request.method == 'POST':
         form = SignInForm(request.POST)
         if form.is_valid():
@@ -41,7 +56,7 @@ def signIn(request):
             try:
                 user = User.objects.get(username=cd['username'])
                 if pbkdf2_sha256.verify(cd['password1'], user.password1):
-                    USER = cd['username']
+                    USERNAME = cd['username']
                     return redirect('index')
                 else:
                     form.add_error(None, 'Неверный пароль.')
@@ -51,6 +66,12 @@ def signIn(request):
         form = SignInForm()
     context = {'title': 'Авторизация', 'form': form}
     return render(request, 'regapp/signIn.html', context=context)
+
+
+def signOut(request):
+    global USERNAME
+    USERNAME = ''
+    return redirect('index')
 
 
 def equipment(request):
@@ -64,7 +85,7 @@ def myApp(request):
 
 
 def myApplications(request):
-    context = {'title': 'Мои заявки'}
+    context = {'title': 'Мои заявки', 'username': USERNAME}
     return render(request, 'regapp/myApplications.html', context=context)
 
 

@@ -3,44 +3,72 @@
 {% load static %}
 
 {% block header %}
-	<a href="{% url 'index' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
-	<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">username</a>
+	<a href="{% url 'signOut' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
+	<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">{{ username }}</a>
 {% endblock %}
 
 {% block content %}
 	<form method="get">
 		<input type="search" class="search-field" placeholder="Введите наименование оборудования">
 	</form>
+<!--	<div class="categories-wrapper">-->
+<!--		<p>Категории</p>-->
+<!--		<ul>-->
+<!--			<li class="selected-category"><a href="#">Все категории</a></li>-->
+<!--			<li><a href="#">Информатика</a></li>-->
+<!--			<li><a href="#">Химия</a></li>-->
+<!--			<li><a href="#">Физика</a></li>-->
+<!--			<li><a href="#">Программирование</a></li>-->
+<!--			<li><a href="#">Радиотехника</a></li>-->
+<!--			<li><a href="#">Пищевые технологии</a></li>-->
+<!--			<li><a href="#">Гидромеханика</a></li>-->
+<!--			<li><a href="#">Пилотные установки</a></li>-->
+<!--		</ul>-->
+<!--	</div>-->
+<!--	<div class="equipments-wrapper">-->
+<!--		<a href="{% url 'equipment' %}" class="equipment">-->
+<!--			<img class="equipment-img" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">-->
+<!--			<p>Наименование оборудования</p>-->
+<!--		</a>-->
+<!--		<a href="{% url 'equipment' %}" class="equipment">-->
+<!--			<img class="equipment-img" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">-->
+<!--			<p>Наименование оборудования</p>-->
+<!--		</a>-->
+<!--		<a href="{% url 'equipment' %}" class="equipment">-->
+<!--			<img class="equipment-img" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">-->
+<!--			<p>Наименование оборудования</p>-->
+<!--		</a>-->
+<!--		<a href="{% url 'equipment' %}" class="equipment">-->
+<!--			<img class="equipment-img" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">-->
+<!--			<p>Наименование оборудования</p>-->
+<!--		</a>-->
+<!--	</div>-->
 	<div class="categories-wrapper">
 		<p>Категории</p>
 		<ul>
-			<li class="selected-category"><a href="#">Все категории</a></li>
-			<li><a href="#">Информатика</a></li>
-			<li><a href="#">Химия</a></li>
-			<li><a href="#">Физика</a></li>
-			<li><a href="#">Программирование</a></li>
-			<li><a href="#">Радиотехника</a></li>
-			<li><a href="#">Пищевые технологии</a></li>
-			<li><a href="#">Гидромеханика</a></li>
-			<li><a href="#">Пилотные установки</a></li>
+			{% if catId == 0 %}
+				<li class="selected-category"><a href="{% url 'index' %}">Все категории</a></li>
+				{% for c in categories %}
+					<li><a href="{% url 'index' c.id %}">{{ c.name }}</a></li>
+				{% endfor %}
+			{% else %}
+				<li><a href="{% url 'index' %}">Все категории</a></li>
+				{% for c in categories %}
+					{% if c.id == catId %}
+						<li class="selected-category"><a href="{% url 'index' c.id %}">{{ c.name }}</a></li>
+					{% else %}
+						<li><a href="{% url 'index' c.id %}">{{ c.name }}</a></li>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
 		</ul>
 	</div>
 	<div class="equipments-wrapper">
-		<a href="{% url 'equipment' %}" class="equipment">
-			<img class="equipment-img" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">
-			<p>Наименование оборудования</p>
-		</a>
-		<a href="{% url 'equipment' %}" class="equipment">
-			<img class="equipment-img" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">
-			<p>Наименование оборудования</p>
-		</a>
-		<a href="{% url 'equipment' %}" class="equipment">
-			<img class="equipment-img" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">
-			<p>Наименование оборудования</p>
-		</a>
-		<a href="{% url 'equipment' %}" class="equipment">
-			<img class="equipment-img" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">
-			<p>Наименование оборудования</p>
-		</a>
+		{% for e in equipments %}
+			<a href="{% url 'equipment' %}" class="equipment">
+				<img class="equipment-img" src="{{ e.image.url }}" alt="{{ e.name }}">
+				<p>{{ e.name }}</p>
+			</a>
+		{% endfor %}
 	</div>
 {% endblock %}
