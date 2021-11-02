@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
 
@@ -8,17 +8,21 @@ from .models import *
 from passlib.hash import pbkdf2_sha256
 
 
-USERNAME = ''
-
-
 def index(request, catId=0):
-    context = {'title': 'Главная', 'username': USERNAME}
-    if USERNAME:
-        context['catId'] = catId
+    context = {'title': 'Главная'}
+    if 'username' in request.session:
+        context['username'] = request.session['username']
         context['categories'] = Category.objects.all()
-        context['equipments'] = Equipment.objects.all() if catId == 0 else (
-            Equipment.objects.filter(category=Category.objects.get(id=catId))
-        )
+        context['catId'] = catId
+        searchTxt = request.GET.get('search', False) if request.method == 'GET' else False
+        if searchTxt:
+            context['equipments'] = Equipment.objects.filter(Q(name__icontains=searchTxt) |
+                                                             Q(slug__icontains=searchTxt) |
+                                                             Q(description__icontains=searchTxt))
+        else:
+            context['equipments'] = Equipment.objects.all() if catId == 0 else (
+                Equipment.objects.filter(category=Category.objects.get(id=catId))
+            )
         return render(request, 'regapp/main.html', context=context)
     return render(request, 'regapp/index.html', context=context)
 
@@ -48,7 +52,6 @@ def signUp(request):
 
 
 def signIn(request):
-    global USERNAME
     if request.method == 'POST':
         form = SignInForm(request.POST)
         if form.is_valid():
@@ -56,7 +59,8 @@ def signIn(request):
             try:
                 user = User.objects.get(username=cd['username'])
                 if pbkdf2_sha256.verify(cd['password1'], user.password1):
-                    USERNAME = cd['username']
+                    request.session.set_expiry(0)
+                    request.session['username'] = cd['username']
                     return redirect('index')
                 else:
                     form.add_error(None, 'Неверный пароль.')
@@ -69,8 +73,7 @@ def signIn(request):
 
 
 def signOut(request):
-    global USERNAME
-    USERNAME = ''
+    del request.session['username']
     return redirect('index')
 
 
@@ -85,7 +88,7 @@ def myApp(request):
 
 
 def myApplications(request):
-    context = {'title': 'Мои заявки', 'username': USERNAME}
+    context = {'title': 'Мои заявки', 'username': request.session['username']}
     return render(request, 'regapp/myApplications.html', context=context)
 
 
