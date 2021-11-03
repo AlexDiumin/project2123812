@@ -19,7 +19,7 @@ class SignUpForm(forms.ModelForm):
             'password1': forms.PasswordInput(attrs={'class': 'input', 'placeholder': 'Введите пароль'}),
             'password2': forms.PasswordInput(attrs={'class': 'input', 'placeholder': 'Введите пароль еще раз'}),
             'full_name': forms.TextInput(attrs={'class': 'input', 'placeholder': 'Введите ФИО'}),
-            'position': forms.Select(attrs={'class': 'input', 'placeholder': 'Введите должность'})
+            'position': forms.Select(attrs={'class': 'input', 'placeholder': 'Выберите должность'})
         }
 
     def clean_username(self):

@@ -100,7 +100,7 @@ footer {
 /*
 ** ФОРМЫ
 */
-.form-width-half {
+/*.form-width-half {
 	width: 50%;
 	margin: 0 auto;
 }
@@ -122,6 +122,105 @@ footer {
 .form-row-error ul {
 	list-style: none;
 	margin: 0;
+}
+.form-row-error:first-of-type {
+	margin-top: 20px;
+	text-align: center;
+}
+.form-row-error:empty {
+	display: none;
+}
+
+.label {
+	float: left;
+	height: 30px;
+	width: calc(50% - 10px);
+	text-align: right;
+	font-size: 14px;
+	line-height: 30px;
+	color: #333;
+	font-weight: normal;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.input {
+	float: right;
+	height: 30px;
+	width: calc(50% - 10px);
+	box-sizing: border-box;
+	border: 1px solid #999;
+	border-radius: 2px;
+	background-color: rgb(249, 252, 255);
+	padding: 0 4px;
+	font-size: 14px;
+	line-height: 28px;
+	color: #333;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.input::placeholder {
+	font-size: 14px;
+	line-height: 28px;
+	color: #ccc;
+}
+
+.input-left {
+	float: left;
+}
+
+.input-width-1 {
+	width: calc(50% - 10px - 20px - 30px);
+}
+
+.search-field {
+	height: 30px;
+	width: 74.514038876%;
+	margin: 0 12.742980562% 50px;
+	box-sizing: border-box;
+	border: 0;
+	border-bottom: 1px solid #999;
+	background-color: transparent;
+	padding: 0 4px;
+	font-size: 16px;
+	line-height: 29px;
+	color: #333;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-align: center;
+	outline: 0;
+}
+.search-field::placeholder {
+	font-size: 16px;
+	line-height: 29px;
+	color: #ccc;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+  visibility: hidden;
+  position: absolute;
+}*/
+.form-width-half {
+	width: 50%;
+	margin: 0 auto;
+}
+
+.form-row {
+	width: 100%;
+	overflow: hidden;
+	margin: 20px 0;
+}
+
+.form-row-error {
+	text-align: right;
+	font-weight: bolder;
+	color: rgba(255, 0, 0, .75);
+	font-size: 12px;
+	line-height: 12px;
+	margin-top: -10px;
 }
 .form-row-error:first-of-type {
 	margin-top: 20px;
@@ -202,8 +301,6 @@ footer {
 }
 
 input[type="search"]::-webkit-search-cancel-button {
-  /*display: none;*/
-
   visibility: hidden;
   position: absolute;
 }

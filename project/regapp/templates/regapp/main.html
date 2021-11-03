@@ -4,7 +4,11 @@
 
 {% block header %}
 	<a href="{% url 'signOut' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
-	<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">{{ username }}</a>
+	{% if count %}
+		<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">{{ username }} ({{ count }})</a>
+	{% else %}
+		<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">{{ username }}</a>
+	{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -33,7 +37,7 @@
 	</div>
 	<div class="equipments-wrapper">
 		{% for e in equipments %}
-			<a href="{% url 'equipment' %}" class="equipment">
+			<a href="{% url 'equipment' e.slug %}" class="equipment">
 				<img class="equipment-img" src="{{ e.image.url }}" alt="{{ e.name }}">
 				<p>{{ e.name }}</p>
 			</a>

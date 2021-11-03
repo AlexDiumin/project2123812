@@ -2,7 +2,11 @@
 
 {% block header %}
     <a href="{% url 'signOut' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
-    <a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">username</a>
+	{% if count %}
+		<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">{{ username }} ({{ count }})</a>
+	{% else %}
+		<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">{{ username }}</a>
+	{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -14,10 +18,12 @@
             <th>ДАТА</th>
             <th>ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ</th>
         </tr>
-        <tr onclick="window.location='{% url 'myApp' %}';">
-            <td>154</td>
-            <td>19.01.2021</td>
-            <td>Частное образовательное учреждение высшего образования «Московский университет имени С.Ю. Витте»</td>
-        </tr>
+        {% for app in apps %}
+            <tr onclick="window.location='{% url 'myApp' app.id %}';">
+                <td>{{ app.id }}</td>
+                <td>{{ app.date }}</td>
+                <td>{{ app.educational_institution.name }}</td>
+            </tr>
+        {% endfor %}
     </table>
 {% endblock %}

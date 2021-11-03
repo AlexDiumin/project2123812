@@ -2,48 +2,102 @@
 
 {% block header %}
     <a href="{% url 'index' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
-    <a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">username</a>
+	{% if count %}
+		<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">{{ username }} ({{ count }})</a>
+	{% else %}
+		<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">{{ username }}</a>
+	{% endif %}
 {% endblock %}
 
 {% block content %}
-		<form class="form-width-half" action="#" method="post">
+<!--		<form class="form-width-half" action="#" method="post">-->
+<!--			<p class="title text-16">Регистрация заявки</p>-->
+<!--			<hr class="line"/>-->
+
+<!--			<select id="institutions" name="institutions" class="input input-right">-->
+<!--				<option selected="selected" value="institution id">ЧОУВО «МУ им. С.Ю. Витте»</option>-->
+<!--			</select>-->
+<!--			<label for="institutions" class="label">Образовательное учреждение:</label>-->
+
+<!--			<button class="btn btn-right btn-width-half secondary-btn">ДОБАВИТЬ ОБОРУДОВАНИЕ</button>-->
+<!--			<label class="label">Оборудование:</label>-->
+
+<!--			<div class="equipment-item">-->
+<!--				<button class="btn btn-right btn-width-30 secondary-btn">✕</button>-->
+<!--				<input class="input input-width-1 input-right" type="number" placeholder="Кол-во">-->
+<!--				<select name="equipments" class="input input-left">-->
+<!--					<optgroup label="Группа 1">-->
+<!--						<option value="equipment-id">Оборудование 1</option>-->
+<!--					</optgroup>-->
+<!--					<optgroup label="Группа 2">-->
+<!--						<option value="equipment-id2">Оборудование 2</option>-->
+<!--					</optgroup>-->
+<!--				</select>-->
+<!--			</div>-->
+<!--			<div class="equipment-item">-->
+<!--				<button class="btn btn-right btn-width-30 secondary-btn">✕</button>-->
+<!--				<input class="input input-width-1 input-right" type="number" placeholder="Кол-во">-->
+<!--				<select name="equipments" class="input input-left">-->
+<!--					<optgroup label="Группа 1">-->
+<!--						<option value="equipment-id">Оборудование 1</option>-->
+<!--					</optgroup>-->
+<!--					<optgroup label="Группа 2">-->
+<!--						<option value="equipment-id2">Оборудование 2</option>-->
+<!--					</optgroup>-->
+<!--				</select>-->
+<!--			</div>-->
+
+<!--			<hr class="line"/>-->
+<!--			<input class="btn btn-right btn-width-half primary-btn" type="submit" value="ЗАРЕГИСТРИРОВАТЬ">-->
+<!--		</form>-->
+		<form class="form-width-half" method="post">
+			{% csrf_token %}
 			<p class="title text-16">Регистрация заявки</p>
 			<hr class="line"/>
 
-			<select id="institutions" name="institutions" class="input input-right">
-				<option selected="selected" value="institution id">ЧОУВО «МУ им. С.Ю. Витте»</option>
-			</select>
-			<label for="institutions" class="label">Образовательное учреждение:</label>
-
-			<button class="btn btn-right btn-width-half secondary-btn">ДОБАВИТЬ ОБОРУДОВАНИЕ</button>
-			<label class="label">Оборудование:</label>
-
-			<div class="equipment-item">
-				<button class="btn btn-right btn-width-30 secondary-btn">✕</button>
-				<input class="input input-width-1 input-right" type="number" placeholder="Кол-во">
-				<select name="equipments" class="input input-left">
-					<optgroup label="Группа 1">
-						<option value="equipment-id">Оборудование 1</option>
-					</optgroup>
-					<optgroup label="Группа 2">
-						<option value="equipment-id2">Оборудование 2</option>
-					</optgroup>
+			<div class="form-row form-row-error"></div>
+			<div class="form-row">
+				<label for="institutions" class="label">Образовательное учреждение:</label>
+				<select id="institutions" name="institutions" class="input input-right">
+					<option value selected>Выберите учреждение</option>
+					{% for i in institution %}
+						<option value="{{ i.id }}">{{ i.short_name }}</option>
+					{% endfor %}
 				</select>
 			</div>
-			<div class="equipment-item">
-				<button class="btn btn-right btn-width-30 secondary-btn">✕</button>
-				<input class="input input-width-1 input-right" type="number" placeholder="Кол-во">
-				<select name="equipments" class="input input-left">
-					<optgroup label="Группа 1">
-						<option value="equipment-id">Оборудование 1</option>
-					</optgroup>
-					<optgroup label="Группа 2">
-						<option value="equipment-id2">Оборудование 2</option>
-					</optgroup>
-				</select>
+			<div class="form-row form-row-error"></div>
+
+			<div class="form-row">
+				<label class="label">Оборудование:</label>
+				<button class="btn btn-right btn-width-half secondary-btn">ДОБАВИТЬ ОБОРУДОВАНИЕ</button>
 			</div>
+
+			{% for e in equipments %}
+				<div class="form-row">
+					<select name="equipments" class="input input-left">
+						{% for c in categories %}
+							<optgroup label="{{ c.name }}">
+								{% for ae in all_equipments %}
+									{% if ae.category == c %}
+										{% if ae == e %}
+											<option value="{{ ae.id }}" selected>{{ ae.name }}</option>
+										{% else %}
+											<option value="{{ ae.id }}">{{ ae.name }}</option>
+										{% endif %}
+									{% endif %}
+								{% endfor %}
+							</optgroup>
+						{% endfor %}
+					</select>
+					<button class="btn btn-right btn-width-30 secondary-btn">✕</button>
+					<input class="input input-width-1 input-right" type="number" value="{{ e.count }}" placeholder="Кол-во">
+				</div>
+				<div class="form-row form-row-error"></div>
+			{% endfor %}
 
 			<hr class="line"/>
-			<input class="btn btn-right btn-width-half primary-btn" type="submit" value="ЗАРЕГИСТРИРОВАТЬ">
+			<div class="form-row">
+				<input class="btn btn-right btn-width-half primary-btn" type="submit" value="ЗАРЕГИСТРИРОВАТЬ">
+			</div>
 		</form>
 {% endblock %}

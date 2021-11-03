@@ -9,12 +9,12 @@ from passlib.hash import pbkdf2_sha256
 
 
 def index(request, catId=0):
-    context = {'title': 'Главная'}
+    context = {'title': 'Главная', 'count': request.session.get('count', False)}
     if 'username' in request.session:
         context['username'] = request.session['username']
         context['categories'] = Category.objects.all()
         context['catId'] = catId
-        searchTxt = request.GET.get('search', False) if request.method == 'GET' else False
+        searchTxt = request.GET.get('search', False)
         if searchTxt:
             context['equipments'] = Equipment.objects.filter(Q(name__icontains=searchTxt) |
                                                              Q(slug__icontains=searchTxt) |
@@ -25,18 +25,6 @@ def index(request, catId=0):
             )
         return render(request, 'regapp/main.html', context=context)
     return render(request, 'regapp/index.html', context=context)
-
-
-# def main(request, catId):
-#     context = {'title': 'Главная',
-#                'username': USERNAME,
-#                'categories': Category.objects.all(),
-#                'catId': catId}
-#     if catId > 0:
-#         context['equipments'] = Equipment.objects.filter(category=Category.objects.get(id=catId))
-#     else:
-#         context['equipments'] = Equipment.objects.all()
-#     return render(request, 'regapp/main.html', context=context)
 
 
 def signUp(request):
@@ -72,28 +60,69 @@ def signIn(request):
     return render(request, 'regapp/signIn.html', context=context)
 
 
+# !!!!!!!!!!!!!!!!
 def signOut(request):
-    del request.session['username']
+    # del request.session['username']
+    for k in request.session.keys():
+        del request.session[k]
+
     return redirect('index')
 
 
-def equipment(request):
-    context = {'title': 'Наименование оборудования'}
+def equipment(request, slug=1):
+    count = int(request.POST.get('count', False))
+    if count:
+        request.session['count'] = request.session['count'] + count if 'count' in request.session else count
+        request.session['slugs'] = request.session['slugs'] + ' ' + slug if 'slug' in request.session else slug
+        request.session['counts'] = request.session['counts'] + ' ' + str(count) if 'counts' in request.session else str(count)
+    context = {'title': f'Оборудование · {slug}',
+               'username': request.session['username'],
+               'count': request.session.get('count', False),
+               'e': Equipment.objects.get(slug=slug)}
     return render(request, 'regapp/equipment.html', context=context)
 
 
-def myApp(request):
-    context = {'title': 'Заявка №15'}
+def myApp(request, appId):
+    context = {'title': f'Заявка №{appId}',
+               'username': request.session['username'],
+               'user': User.objects.get(username=request.session['username']),
+               'count': request.session.get('count', False),
+               'app': Application.objects.get(id=appId),
+               'appEqs': ApplicationEquipment.objects.filter(application__id=appId)}
     return render(request, 'regapp/myApp.html', context=context)
 
 
 def myApplications(request):
-    context = {'title': 'Мои заявки', 'username': request.session['username']}
+    apps = Application.objects.filter(user__username=request.session['username']) if 'username' in request.session else False
+    context = {'title': 'Мои заявки',
+               'username': request.session['username'],
+               'count': request.session.get('count', False),
+               'apps': apps}
     return render(request, 'regapp/myApplications.html', context=context)
 
 
 def regApp(request):
-    context = {'title': 'Регистрация заявки'}
+
+    print('\n\n')
+    print(request.session['counts'])
+    print('\n\n')
+
+    equipments = []
+    if 'slugs' in request.session:
+        slugs = request.session['slugs'].split(' ')
+        counts = [int(c) for c in request.session['counts'].split(' ')]
+        scDict = {}
+        for i, v in enumerate(slugs):
+            scDict[v] = scDict[v] + counts[i] if v in scDict else counts[i]
+        for k, v in scDict.items():
+            equipments.append({'equipment': Equipment.objects.get(slug=k), 'count': v})
+    context = {'title': 'Регистрация заявки',
+               'username': request.session['username'],
+               'count': request.session['count'],
+               'institution': Institution.objects.all(),
+               'equipments': equipments,
+               'all_equipments': Equipment.objects.all(),
+               'categories': Category.objects.all()}
     return render(request, 'regapp/regApp.html', context=context)
 
 

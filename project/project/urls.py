@@ -14,7 +14,8 @@ urlpatterns = [
     path('signOut/', signOut, name='signOut'),
     path('regApp/', regApp, name='regApp'),
     path('equipment/', equipment, name='equipment'),
-    path('myApp/', myApp, name='myApp'),
+    path('equipment/<slug:slug>', equipment, name='equipment'),
+    path('myApp/<int:appId>/', myApp, name='myApp'),
     path('myApplications/', myApplications, name='myApplications'),
 ]
 

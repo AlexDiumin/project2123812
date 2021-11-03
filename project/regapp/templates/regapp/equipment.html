@@ -4,21 +4,28 @@
 
 {% block header %}
 	<a href="{% url 'index' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
-	<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">username</a>
+	{% if count %}
+		<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">{{ username }} ({{ count }})</a>
+	{% else %}
+		<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">{{ username }}</a>
+	{% endif %}
 {% endblock %}
 
 {% block content %}
 	<a href="{% url 'index' %}" class="btn btn-left secondary-btn">ОБОРУДОВАНИЕ</a>
 	<div class="equipment-wrapper">
-		<img class="equipment-img equipment-img-big" src="{% static 'regapp/images/1.png' %}" alt="Наименование оборудования">
+		<img class="equipment-img equipment-img-big" src="{{ e.image.url }}" alt="{{ e.name }}">
 		<div class="equipment-right">
-			<p class="text-margin-20 text-color-9">Категория</p>
-			<p class=" text-margin-20text-16 text-bold">НАИМЕНОВАНИЕ ОБОРУДОВАНИЯ</p>
-			<P class="text-margin-20"><span class="text-bold">Артикул:</span> МП-Р92</P>
-			<p class="text-margin-20"><span class="text-bold">Цена:</span> предоставляется по запросу</p>
-			<input type="number" class="input input-left" placeholder="Кол-во">
-			<button class="btn btn-right btn-width-half primary-btn">СОХРАНИТЬ</button>
+			<p class="text-margin-20 text-color-9">{{ e.category }}</p>
+			<p class=" text-margin-20text-16 text-bold">{{ e.name }}</p>
+			<P class="text-margin-20"><span class="text-bold">Артикул: </span>{{ e.slug }}</P>
+			<p class="text-margin-20"><span class="text-bold">Цена: </span>{{ e.price }}</p>
+			<form method="post">
+				{% csrf_token %}
+				<input type="number" name="count" class="input input-left" placeholder="Кол-во">
+				<button type="submit" class="btn btn-right btn-width-half primary-btn">СОХРАНИТЬ</button>
+			</form>
 		</div>
 	</div>
-	<p class="text-margin-20 equipment-description">Резервуар прозрачный, поэтому студенты могут видеть схемы потока. Стороны - листовое стекло, чтобы сопротивляться истиранию от проницаемой среды. Задняя часть резервуара содержит отводы давления. Каждый отвод имеет фильтры, которые останавливают любые нежелательные частицы. Отводы соединяются с рядом пьезометрических трубок на боковой части устройства, которые позволяют измерять распределение напора вдоль резервуара.</p>
+	<p class="text-margin-20 equipment-description">{{ e.description }}</p>
 {% endblock %}
