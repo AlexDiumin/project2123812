@@ -22,7 +22,7 @@
 			<p class="text-margin-20"><span class="text-bold">Цена: </span>{{ e.price }}</p>
 			<form method="post">
 				{% csrf_token %}
-				<input type="number" name="count" class="input input-left" placeholder="Кол-во">
+				<input type="number" min="1" name="count" class="input input-left" placeholder="Кол-во">
 				<button type="submit" class="btn btn-right btn-width-half primary-btn">СОХРАНИТЬ</button>
 			</form>
 		</div>

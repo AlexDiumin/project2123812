@@ -69,35 +69,40 @@
 
 			<div class="form-row">
 				<label class="label">Оборудование:</label>
-				<button class="btn btn-right btn-width-half secondary-btn">ДОБАВИТЬ ОБОРУДОВАНИЕ</button>
+				<button class="btn btn-right btn-width-half secondary-btn" name="add">ДОБАВИТЬ ОБОРУДОВАНИЕ</button>
 			</div>
 
 			{% for e in equipments %}
 				<div class="form-row">
-					<select name="equipments" class="input input-left">
+					<select name="equipment_{{ e.index }}" class="input input-left">
+						{% if e.equipment == 'default' %}
+							<option value selected>Выберите оборудование</option>
+						{% else %}
+							<option value>Выберите оборудование</option>
+						{% endif %}
 						{% for c in categories %}
 							<optgroup label="{{ c.name }}">
 								{% for ae in all_equipments %}
 									{% if ae.category == c %}
-										{% if ae == e %}
-											<option value="{{ ae.id }}" selected>{{ ae.name }}</option>
+										{% if ae == e.equipment %}
+											<option value="{{ ae.slug }}" selected>{{ ae.name }}</option>
 										{% else %}
-											<option value="{{ ae.id }}">{{ ae.name }}</option>
+											<option value="{{ ae.slug }}">{{ ae.name }}</option>
 										{% endif %}
 									{% endif %}
 								{% endfor %}
 							</optgroup>
 						{% endfor %}
 					</select>
-					<button class="btn btn-right btn-width-30 secondary-btn">✕</button>
-					<input class="input input-width-1 input-right" type="number" value="{{ e.count }}" placeholder="Кол-во">
+					<button class="btn btn-right btn-width-30 secondary-btn" name="x_{{ e.index }}" value="{{ e.index }}">✕</button>
+					<input class="input input-width-1 input-right" min="1" type="number" name="count_{{ e.index }}" value="{{ e.count }}" placeholder="Кол-во">
 				</div>
 				<div class="form-row form-row-error"></div>
 			{% endfor %}
 
 			<hr class="line"/>
 			<div class="form-row">
-				<input class="btn btn-right btn-width-half primary-btn" type="submit" value="ЗАРЕГИСТРИРОВАТЬ">
+				<input class="btn btn-right btn-width-half primary-btn" type="submit" name="submit" value="ЗАРЕГИСТРИРОВАТЬ">
 			</div>
 		</form>
 {% endblock %}

@@ -1,3 +1,5 @@
+from itertools import islice
+
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
@@ -60,12 +62,8 @@ def signIn(request):
     return render(request, 'regapp/signIn.html', context=context)
 
 
-# !!!!!!!!!!!!!!!!
 def signOut(request):
-    # del request.session['username']
-    for k in request.session.keys():
-        del request.session[k]
-
+    request.session.clear()
     return redirect('index')
 
 
@@ -73,8 +71,13 @@ def equipment(request, slug=1):
     count = int(request.POST.get('count', False))
     if count:
         request.session['count'] = request.session['count'] + count if 'count' in request.session else count
-        request.session['slugs'] = request.session['slugs'] + ' ' + slug if 'slug' in request.session else slug
-        request.session['counts'] = request.session['counts'] + ' ' + str(count) if 'counts' in request.session else str(count)
+        if 'equipments' in request.session:
+            if slug in request.session['equipments']:
+                request.session['equipments'][slug] += count
+            else:
+                request.session['equipments'][slug] = count
+        else:
+            request.session['equipments'] = {slug: count}
     context = {'title': f'Оборудование · {slug}',
                'username': request.session['username'],
                'count': request.session.get('count', False),
@@ -93,7 +96,8 @@ def myApp(request, appId):
 
 
 def myApplications(request):
-    apps = Application.objects.filter(user__username=request.session['username']) if 'username' in request.session else False
+    apps = Application.objects.filter(user__username=request.session['username']
+                                      ) if 'username' in request.session else False
     context = {'title': 'Мои заявки',
                'username': request.session['username'],
                'count': request.session.get('count', False),
@@ -102,28 +106,47 @@ def myApplications(request):
 
 
 def regApp(request):
-
-    print('\n\n')
-    print(request.session['counts'])
-    print('\n\n')
-
     equipments = []
-    if 'slugs' in request.session:
-        slugs = request.session['slugs'].split(' ')
-        counts = [int(c) for c in request.session['counts'].split(' ')]
-        scDict = {}
-        for i, v in enumerate(slugs):
-            scDict[v] = scDict[v] + counts[i] if v in scDict else counts[i]
-        for k, v in scDict.items():
-            equipments.append({'equipment': Equipment.objects.get(slug=k), 'count': v})
+    submit = False
+    if 'equipments' in request.session:
+        # if 'equipmentsBackup' not in request.session:
+        #     request.session['equipmentsBackup'] = request.session['equipments']
+        if request.method == 'POST':
+            request.session['equipments'] = {}
+            default = False
+            for k, v in request.POST.items():
+                if 'equipment' in k:
+                    idx = int(k.split('_')[1])
+                    if len(v) > 0 and f'x_{idx}' not in request.POST:
+                        slug = v if Equipment.objects.filter(slug=v).count() > 0 else Equipment.objects.get(
+                            name=v).slug
+                        count = int(request.POST[f'count_{idx}']) if len(request.POST[f'count_{idx}']) > 0 else 0
+                        request.session['equipments'][slug] = count if slug not in request.session['equipments'] else (
+                                request.session['equipments'][slug] + count)
+                    elif len(v) == 0:
+                        default = True
+                        if f'x_{idx}' in request.POST:
+                            default = False
+            if 'add' in request.POST or default:
+                request.session['equipments'][''] = ''
+            elif 'submit' in request.POST:
+                submit = True
+        for k, v in request.session['equipments'].items():
+            equipments.append({'equipment': Equipment.objects.get(
+                slug=k) if Equipment.objects.filter(slug=k).exists() else '',
+                               'count': v,
+                               'index': len(equipments)})
     context = {'title': 'Регистрация заявки',
                'username': request.session['username'],
-               'count': request.session['count'],
+               'count': request.session.get('count', False),
                'institution': Institution.objects.all(),
                'equipments': equipments,
                'all_equipments': Equipment.objects.all(),
                'categories': Category.objects.all()}
-    return render(request, 'regapp/regApp.html', context=context)
+    if submit:
+        return render(request, 'regapp/myApp.html', context=context)
+    else:
+        return render(request, 'regapp/regApp.html', context=context)
 
 
 def pageNotFound(request, exception):
