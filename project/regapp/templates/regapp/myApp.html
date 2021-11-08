@@ -1,7 +1,7 @@
 {% extends 'regapp/base.html' %}
 
 {% block header %}
-	<a href="{% url 'index' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
+	<a href="{% url 'signOut' %}" class="btn btn-right ghost-btn">ВЫЙТИ</a>
 	{% if count %}
 		<a href="{% url 'myApplications' %}" class="btn btn-right ghost-btn">{{ username }} ({{ count }})</a>
 	{% else %}
