@@ -50,30 +50,6 @@ class SignUpForm(forms.ModelForm):
         return full_name
 
 
-# class SignInForm(forms.ModelForm):
-#     # def __init__(self, *args, **kwargs):
-#     #     super().__init__(*args, **kwargs)
-#
-#     class Meta:
-#         model = User
-#         fields = ['username', 'password1']
-#         widgets = {
-#             'username': forms.TextInput(attrs={'class': 'input', 'placeholder': 'Введите логин'}),
-#             'password1': forms.PasswordInput(attrs={'class': 'input', 'placeholder': 'Введите пароль'})
-#         }
-#
-#     def clean_username(self):
-#         username = self.cleaned_data['username']
-#         if len(username) >= 50:
-#             raise ValidationError('Длинна логина должна быть меньше 50 символов.')
-#         return username
-#
-#     def clean_password1(self):
-#         password1 = self.cleaned_data['password1']
-#         if len(password1) >= 50:
-#             raise ValidationError('Длинна пароля должна быть меньше 50 символов.')
-#         return password1
-
 class SignInForm(forms.Form):
     username = forms.CharField(max_length=50, label='Логин',
                                widget=forms.TextInput(attrs={'class': 'input', 'placeholder': 'Введите логин'}))

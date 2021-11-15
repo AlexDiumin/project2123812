@@ -1,8 +1,6 @@
-from itertools import islice
-
 from django.contrib.auth import logout
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 
 from regapp.forms import *
@@ -19,9 +17,16 @@ def index(request, catId=0):
         context['catId'] = catId
         searchTxt = request.GET.get('search', False)
         if searchTxt:
+            context['searchTxt'] = searchTxt
             context['equipments'] = Equipment.objects.filter(Q(name__icontains=searchTxt) |
+                                                             Q(name__icontains=searchTxt.lower()) |
+                                                             Q(name__icontains=searchTxt.upper()) |
                                                              Q(slug__icontains=searchTxt) |
-                                                             Q(description__icontains=searchTxt))
+                                                             Q(slug__icontains=searchTxt.lower()) |
+                                                             Q(slug__icontains=searchTxt.upper()) |
+                                                             Q(description__icontains=searchTxt) |
+                                                             Q(description__icontains=searchTxt.lower()) |
+                                                             Q(description__icontains=searchTxt.upper()))
         if 'equipments' not in context or context['equipments'].count() == 0:
             context['equipments'] = Equipment.objects.all() if catId == 0 else (
                 Equipment.objects.filter(category=Category.objects.get(id=catId))
@@ -174,5 +179,5 @@ def regApp(request):
         return render(request, 'regapp/regApp.html', context=context)
 
 
-def pageNotFound(request, exception):
+def pageNotFound():
     return HttpResponseNotFound('Страница не найдена!')

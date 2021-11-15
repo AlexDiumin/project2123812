@@ -13,7 +13,11 @@
 
 {% block content %}
 	<form action="{% url 'index' %}" method="get">
-		<input type="search" required name="search" class="search-field" placeholder="Введите наименование оборудования">
+		{% if searchTxt %}
+			<input value="{{ searchTxt }}" type="search" required name="search" class="search-field" placeholder="Введите наименование оборудования">
+		{% else %}
+			<input type="search" required name="search" class="search-field" placeholder="Введите наименование оборудования">
+		{% endif %}
 	</form>
 	<div class="categories-wrapper">
 		<p>Категории</p>
